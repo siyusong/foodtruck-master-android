@@ -1,0 +1,158 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TruckActivity" >
+
+    <TextView
+        android:id="@+id/detail_food_truck_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:maxLines="1"
+        android:text="FOOD TRUCK NAME"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/detail_image"
+            android:layout_width="107dip"
+            android:layout_height="80dip"
+            android:layout_margin="4dip"
+            android:layout_marginLeft="4dip"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detail_average_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dip"
+                android:text="★★★★☆"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detail_review_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="5 Reviews"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/detail_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="33rd and Spruce"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detail_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Middle-Eastern"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/detail_share_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Share" />
+
+        <Button
+            android:id="@+id/detail_review_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Review" />
+
+        <Button
+            android:id="@+id/detail_checkin_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Check in!" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#FFEEEEEE" />
+
+    <Button
+        android:id="@+id/detail_map_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableLeft="@android:drawable/ic_menu_mapmode"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="15dip"
+        android:text="   Show on Map" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#FFEEEEEE" />
+
+    <Button
+        android:id="@+id/detail_menu_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableLeft="@android:drawable/ic_menu_info_details"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="15dip"
+        android:text="   Explore the Menu" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#FFEEEEEE" />
+
+    <TextView      
+    android:layout_width="fill_parent"   
+    android:layout_height="wrap_content"  
+    android:paddingTop="2dip"  
+    android:paddingBottom="2dip"  
+    android:paddingLeft="5dip"  
+    style="?android:attr/listSeparatorTextViewStyle"
+    android:background="@android:color/holo_orange_dark"
+    android:textColor="@android:color/white"
+    android:text="REVIEWS"/>  
+    
+    <ListView
+        android:id="@+id/detail_review_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
+</LinearLayout>

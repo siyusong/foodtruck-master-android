@@ -1,0 +1,119 @@
+package com.foodtruckmaster.android;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.foodtruckmaster.android.adapter.ReviewAdapter;
+import com.foodtruckmaster.android.model.Review;
+import com.foodtruckmaster.android.model.Truck;
+
+public class TruckActivity extends Activity {
+
+	private ListView listView;
+	private TextView name;
+	private ImageView image;
+	private TextView averageStar;
+	private TextView reviewCount;
+	private TextView address;
+	private TextView genre;
+	private Button mapButton;
+
+	private Truck truck;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		String truckId = getIntent().getStringExtra("id");
+		setContentView(R.layout.activity_truck);
+
+		listView = (ListView) findViewById(R.id.detail_review_list);
+		name = (TextView) findViewById(R.id.detail_food_truck_name);
+		image = (ImageView) findViewById(R.id.detail_image);
+		averageStar = (TextView) findViewById(R.id.detail_average_star);
+		reviewCount = (TextView) findViewById(R.id.detail_review_count);
+		address = (TextView) findViewById(R.id.detail_address);
+		genre = (TextView) findViewById(R.id.detail_genre);
+		
+		
+		mapButton = (Button) findViewById(R.id.detail_map_button);
+		mapButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String uriString = String.format("geo:0,0?q=%s,%s (%s)",
+						String.valueOf(truck.getLocation()[0]),
+						String.valueOf(truck.getLocation()[1]), truck.getName());
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+						Uri.parse(uriString));
+				startActivity(intent);
+			}
+		});
+
+		String url = API.getTruck(truckId);
+		GsonTransformer t = new GsonTransformer();
+		AQuery aq = new AQuery(this);
+		aq.transformer(t).ajax(url, Truck.class, new AjaxCallback<Truck>() {
+			public void callback(String url, final Truck truck,
+					AjaxStatus status) {
+				TruckActivity.this.truck = truck; 
+				
+				ReviewAdapter adapter = new ReviewAdapter(TruckActivity.this,
+						truck.getReviews());
+
+				name.setText(truck.getName());
+				Bitmap icon = BitmapFactory.decodeResource(getResources(),
+						R.drawable.placeholder);
+				image.setImageBitmap(icon);
+				averageStar.setText(Review.getStarString(truck.getAverageStar()));
+
+				if (truck.getReviewCount() == 0) {
+					averageStar.setVisibility(View.GONE);
+					reviewCount.setText("No Reviews Yet");
+				} else if (truck.getReviewCount() == 1) {
+					averageStar.setVisibility(View.VISIBLE);
+					reviewCount.setText("1 Review");
+				} else {
+					averageStar.setVisibility(View.VISIBLE);
+					reviewCount.setText(String.format("%d Reviews",
+							truck.getReviewCount()));
+				}
+
+				address.setText(truck.getAddress());
+				genre.setText(truck.getGenre());
+
+				listView.setAdapter(adapter);
+				listView.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+
+					}
+				});
+			}
+		});
+
+		// getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_truck, menu);
+		return true;
+	}
+
+}
