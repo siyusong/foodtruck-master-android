@@ -39,6 +39,10 @@
             android:name="com.foodtruckmaster.android.TruckActivity"
             android:label="@string/title_activity_truck" >
         </activity>
+        <activity
+            android:name="com.foodtruckmaster.android.ReviewActivity"
+            android:label="@string/title_activity_review" >
+        </activity>
     </application>
 
 </manifest>

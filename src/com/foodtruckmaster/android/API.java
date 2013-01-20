@@ -9,8 +9,8 @@ package com.foodtruckmaster.android;
  */
 public class API {
 
-//	private static String HOST = "http://158.130.104.180:9000";
-	private static String HOST = "http://158.130.108.94:9000";
+	private static String HOST = "http://158.130.104.180:9000";
+//	private static String HOST = "http://158.130.108.94:9000";
 	
 	public static String getNearby(String lat, String lng) {
 		return String.format(HOST + "/trucks/nearby/%s/%s", lat, lng); 
@@ -24,11 +24,13 @@ public class API {
 		return HOST + "/truck/" + truckId;
 	}
 
-	/**
-	 * @param i
-	 * @return
-	 */
 	public static String getTopTrucks(int limit) {
 		return HOST + "/trucks/top/" + limit;
 	}
+
+	public static String getReviewTruck(String truckId) {
+		return HOST + "/review/" + truckId;
+	}
+	
+	
 }

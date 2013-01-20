@@ -114,8 +114,11 @@ public class ReviewAdapter extends BaseAdapter {
 
 		holder.name.setText(review.getName());
 		String comments = review.getComments();
-		comments = comments.replaceAll("-Ben Franklin", "");
-		holder.comments.setText(comments);
+		if (comments != null) {
+			comments = comments.replaceAll("-Ben Franklin", "");
+			comments = comments.replaceAll("\'", "'");
+			holder.comments.setText(comments);
+		}
 		String dateString = DateUtils.getRelativeDateTimeString(context,
 				review.getTimestamp(), DateUtils.MINUTE_IN_MILLIS,
 				DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL).toString();

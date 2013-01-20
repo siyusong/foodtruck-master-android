@@ -34,43 +34,80 @@ public class TruckActivity extends Activity {
 	private Button mapButton;
 
 	private Truck truck;
+	private String truckId;
+	protected Button shareButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String truckId = getIntent().getStringExtra("id");
-		setContentView(R.layout.activity_truck);
-
-		listView = (ListView) findViewById(R.id.detail_review_list);
-		name = (TextView) findViewById(R.id.detail_food_truck_name);
-		image = (ImageView) findViewById(R.id.detail_image);
-		averageStar = (TextView) findViewById(R.id.detail_average_star);
-		reviewCount = (TextView) findViewById(R.id.detail_review_count);
-		address = (TextView) findViewById(R.id.detail_address);
-		genre = (TextView) findViewById(R.id.detail_genre);
-		
-		
-		mapButton = (Button) findViewById(R.id.detail_map_button);
-		mapButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String uriString = String.format("geo:0,0?q=%s,%s (%s)",
-						String.valueOf(truck.getLocation()[0]),
-						String.valueOf(truck.getLocation()[1]), truck.getName());
-				Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-						Uri.parse(uriString));
-				startActivity(intent);
-			}
-		});
-
+		truckId = getIntent().getStringExtra("id");
+		refresh();
+		// getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
+	private void refresh() {
 		String url = API.getTruck(truckId);
 		GsonTransformer t = new GsonTransformer();
 		AQuery aq = new AQuery(this);
 		aq.transformer(t).ajax(url, Truck.class, new AjaxCallback<Truck>() {
+			private Button reviewButton;
+
 			public void callback(String url, final Truck truck,
 					AjaxStatus status) {
-				TruckActivity.this.truck = truck; 
-				
+				setContentView(R.layout.activity_truck);
+
+				listView = (ListView) findViewById(R.id.detail_review_list);
+				name = (TextView) findViewById(R.id.detail_food_truck_name);
+				image = (ImageView) findViewById(R.id.detail_image);
+				averageStar = (TextView) findViewById(R.id.detail_average_star);
+				reviewCount = (TextView) findViewById(R.id.detail_review_count);
+				address = (TextView) findViewById(R.id.detail_address);
+				genre = (TextView) findViewById(R.id.detail_genre);
+
+				mapButton = (Button) findViewById(R.id.detail_map_button);
+				mapButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String uriString = String.format(
+								"geo:0,0?q=%s,%s (%s)",
+								String.valueOf(truck.getLocation()[0]),
+								String.valueOf(truck.getLocation()[1]),
+								truck.getName());
+						Intent intent = new Intent(
+								android.content.Intent.ACTION_VIEW, Uri
+										.parse(uriString));
+						startActivity(intent);
+					}
+				});
+
+				shareButton = (Button) findViewById(R.id.detail_share_button);
+				shareButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String str = truck.getName() + "\n" + truck.getGenre()
+								+ "\n" + truck.getAddress();
+						Intent intent = new Intent(Intent.ACTION_SEND);
+						intent.setType("text/plain");
+						intent.putExtra(Intent.EXTRA_TEXT, str);
+						startActivity(Intent.createChooser(intent, "Share"));
+					}
+				});
+
+				reviewButton = (Button) findViewById(R.id.detail_review_button);
+				reviewButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(TruckActivity.this,
+								ReviewActivity.class);
+						intent.putExtra("id", truckId);
+						intent.putExtra("name", truck.getName());
+						startActivityForResult(intent, 1);
+
+					}
+				});
+
+				TruckActivity.this.truck = truck;
+
 				ReviewAdapter adapter = new ReviewAdapter(TruckActivity.this,
 						truck.getReviews());
 
@@ -105,8 +142,6 @@ public class TruckActivity extends Activity {
 				});
 			}
 		});
-
-		// getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -114,6 +149,21 @@ public class TruckActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_truck, menu);
 		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 1) {
+			if (resultCode == RESULT_OK) {
+				refresh();
+			}
+		}
 	}
 
 }

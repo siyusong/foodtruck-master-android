@@ -3,6 +3,7 @@
  */
 package com.foodtruckmaster.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -48,6 +49,11 @@ public class TopTruckListFragment extends Fragment {
 							@Override
 							public void onItemClick(AdapterView<?> parent,
 									View view, int position, long id) {
+								String truckId = truckList[(int) id].getId();
+								Intent intent = new Intent(getActivity(),
+										TruckActivity.class);
+								intent.putExtra("id", truckId);
+								startActivity(intent);
 
 							}
 						});
