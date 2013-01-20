@@ -10,5 +10,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_truck">Food Truck Master</string>
     <string name="title_activity_review">ReviewActivity</string>
+    <string name="title_activity_menu">MenuActivity</string>
 
 </resources>

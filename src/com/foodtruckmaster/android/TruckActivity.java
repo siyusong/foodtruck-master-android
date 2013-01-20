@@ -1,5 +1,7 @@
 package com.foodtruckmaster.android;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +21,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.foodtruckmaster.android.adapter.ReviewAdapter;
+import com.foodtruckmaster.android.model.Entry;
 import com.foodtruckmaster.android.model.Review;
 import com.foodtruckmaster.android.model.Truck;
 
@@ -51,6 +54,7 @@ public class TruckActivity extends Activity {
 		AQuery aq = new AQuery(this);
 		aq.transformer(t).ajax(url, Truck.class, new AjaxCallback<Truck>() {
 			private Button reviewButton;
+			private Button menuButton;
 
 			public void callback(String url, final Truck truck,
 					AjaxStatus status) {
@@ -76,6 +80,21 @@ public class TruckActivity extends Activity {
 						Intent intent = new Intent(
 								android.content.Intent.ACTION_VIEW, Uri
 										.parse(uriString));
+						startActivity(intent);
+					}
+				});
+				
+				menuButton = (Button) findViewById(R.id.detail_menu_button);
+				menuButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(TruckActivity.this, MenuActivity.class);
+						ArrayList<Entry> list = new ArrayList<Entry>();
+						for (Entry e : truck.getEntries()) {
+							list.add(e);
+						}
+						intent.putExtra("name", truck.getName());
+						intent.putExtra("list", list);
 						startActivity(intent);
 					}
 				});
@@ -116,7 +135,7 @@ public class TruckActivity extends Activity {
 						R.drawable.placeholder);
 				image.setImageBitmap(icon);
 				averageStar.setText(Review.getStarString(truck.getAverageStar()));
-
+				
 				if (truck.getReviewCount() == 0) {
 					averageStar.setVisibility(View.GONE);
 					reviewCount.setText("No Reviews Yet");
@@ -144,12 +163,12 @@ public class TruckActivity extends Activity {
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_truck, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.activity_truck, menu);
+//		return true;
+//	}
 
 	/*
 	 * (non-Javadoc)

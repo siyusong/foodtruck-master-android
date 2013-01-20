@@ -18,6 +18,7 @@ public class Truck {
 	private double averageStar;
 	private int reviewCount;
 	private Review[] reviews;
+	private Entry[] entries;
 	
 	public Truck() {
 	}
@@ -153,5 +154,19 @@ public class Truck {
 	 */
 	public Review[] getReviews() {
 		return reviews;
+	}
+
+	/**
+	 * @return the entries
+	 */
+	public Entry[] getEntries() {
+		return entries;
+	}
+
+	/**
+	 * @param entries the entries to set
+	 */
+	public void setEntries(Entry[] entries) {
+		this.entries = entries;
 	}
 }

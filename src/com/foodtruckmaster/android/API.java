@@ -9,7 +9,7 @@ package com.foodtruckmaster.android;
  */
 public class API {
 
-	private static String HOST = "http://158.130.104.180:9000";
+	private static String HOST = "https://morning-fjord-6018.herokuapp.com";
 //	private static String HOST = "http://158.130.108.94:9000";
 	
 	public static String getNearby(String lat, String lng) {
